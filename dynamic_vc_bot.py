@@ -340,6 +340,45 @@ async def purge(interaction: discord.Interaction, count: int):
     deleted = await interaction.channel.purge(limit=count)
     await interaction.followup.send(f"✅ Deleted {len(deleted)} message(s).", ephemeral=True)
 
+@bot.tree.command(name="help", description="Show a list of all available commands")
+async def help_command(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="📜 Borgir Utilities - Help Menu",
+        description="Here’s a list of all available commands and what they do:",
+        color=discord.Color.blurple()
+    )
+
+    embed.add_field(
+        name="/add-vc-hub `channel:` `limit:` `channel_limit:`",
+        value="Make a voice channel into a VC hub. When someone joins the hub, a sub‑VC is created. "
+              "`limit` sets sub‑VC user limit, `channel_limit` sets max number of sub‑VCs from the hub.",
+        inline=False
+    )
+    embed.add_field(
+        name="/remove-vc-hub `channel:`",
+        value="Remove a channel from being a VC hub.",
+        inline=False
+    )
+    embed.add_field(
+        name="/list-vc-hubs",
+        value="List all configured VC hubs in this server.",
+        inline=False
+    )
+    embed.add_field(
+        name="/purge `count:`",
+        value="Delete the specified number of recent messages from this channel (max 100).",
+        inline=False
+    )
+    embed.add_field(
+        name="/help",
+        value="Display this help menu.",
+        inline=False
+    )
+
+    embed.set_footer(text="⚡ Borgir Utilities Bot • Dynamic Voice Channels & Utilities")
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
 # Error handling for commands
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
