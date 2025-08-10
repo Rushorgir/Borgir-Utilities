@@ -61,7 +61,6 @@
    - `/purge count:<n>` — Clear messages.
 
 ---
-
 <!-- Footer Animation -->
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0066ff,100:00ffcc&height=150&section=footer"/>
