@@ -214,8 +214,8 @@ async def on_voice_state_update(member, before, after):
 async def add_vc_hub(
     interaction: discord.Interaction,
     channel: discord.VoiceChannel,
-    limit: int,
-    channel_limit: int
+    limit: Optional[int] = None,
+    channel_limit: Optional[int] = None
 ):
     if not interaction.user.guild_permissions.manage_channels:
         await interaction.response.send_message("❌ You need 'Manage Channels' permission to use this command.", ephemeral=True)
