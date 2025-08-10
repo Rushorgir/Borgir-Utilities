@@ -322,6 +322,24 @@ async def list_vc_hubs(interaction: discord.Interaction):
     except Exception as e:
         await interaction.response.send_message(f"❌ Error listing VC hubs: {e}", ephemeral=True)
 
+@bot.tree.command(name="purge", description="Delete a specified number of messages from this channel")
+@app_commands.describe(count="How many recent messages to delete (max 100)")
+async def purge(interaction: discord.Interaction, count: int):
+    # Only allow users with Manage Messages permission
+    if not interaction.user.guild_permissions.manage_messages:
+        await interaction.response.send_message("❌ You need 'Manage Messages' permission to use this command.", ephemeral=True)
+        return
+
+    # Discord only allows up to 100 messages at once
+    if count < 1 or count > 100:
+        await interaction.response.send_message("❌ Count must be between 1 and 100.", ephemeral=True)
+        return
+    # Acknowledge right away (so the UI doesn't timeout)
+    await interaction.response.defer(ephemeral=True)
+
+    deleted = await interaction.channel.purge(limit=count)
+    await interaction.followup.send(f"✅ Deleted {len(deleted)} message(s).", ephemeral=True)
+
 # Error handling for commands
 @bot.tree.error
 async def on_app_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
