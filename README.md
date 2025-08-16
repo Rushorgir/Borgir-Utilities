@@ -18,6 +18,11 @@
 
 ---
 
+## 📌 Overview
+A Python-powered Discord bot using discord.py for automated voice channel management. Create hubs that generate sub‑channels on demand, enforce user/channel limits, and auto‑delete empty channels. Also provides useful moderation tools like message purging.
+
+---
+
 ## ✨ Features
 
 - 🎧 **Dynamic Voice Channels**
