@@ -1,6 +1,6 @@
 <!-- Banner -->
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00ffcc,100:0066ff&height=250&section=header&text=🎙️%20Borgir%20Utilities&fontSize=60&fontColor=ffffff&animation=fadeIn&fontAlignY=38" alt="Borgir Utilities Banner"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00ffcc,100:0066ff&height=250&section=header&text=Borgir%20Utilities&fontSize=60&fontColor=ffffff&animation=fadeIn&fontAlignY=38" alt="Borgir Utilities Banner"/>
 </p>
 
 <!-- Animated tagline -->
