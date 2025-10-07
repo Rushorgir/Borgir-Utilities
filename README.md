@@ -38,7 +38,6 @@ A Python-powered Discord bot using discord.py for automated voice channel manage
   - `/add-vc-hub` — Make a channel a VC hub.
   - `/remove-vc-hub` — Remove a VC hub.
   - `/list-vc-hubs` — View all active hubs.
-  - `/purge` — Bulk delete messages.
   - `/help` — View all commands.
 
 - 🔐 **Permission Control**
@@ -63,7 +62,6 @@ A Python-powered Discord bot using discord.py for automated voice channel manage
 
 4. **Manage**  
    - `/list-vc-hubs` — View hubs.  
-   - `/purge count:<n>` — Clear messages.
 
 ---
 <!-- Footer Animation -->

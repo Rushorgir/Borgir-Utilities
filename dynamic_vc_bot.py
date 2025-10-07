@@ -166,7 +166,7 @@ async def on_voice_state_update(member, before, after):
             except Exception as e:
                 print(f"❌ Error creating temporary channel: {e}")
 
-    # User left a channel
+    # User left a channel — handle deletion of temporary channels when empty
     if before.channel and bot.is_temp_channel(before.channel.id):
         if len(before.channel.members) == 0:
             try:
@@ -179,30 +179,10 @@ async def on_voice_state_update(member, before, after):
                 print(f"🗑 Deleted empty temporary channel '{temp_channel_name}'")
 
             except discord.errors.NotFound:
+                # Channel was already deleted — ensure DB/ref cleaned up
                 bot.remove_temp_channel(before.channel.id)
             except Exception as e:
                 print(f"❌ Error deleting temporary channel: {e}")
-
-
-    # User left a channel
-    if before.channel and bot.is_temp_channel(before.channel.id):
-        # Check if the temporary channel is now empty
-        if len(before.channel.members) == 0:
-            try:
-                # Delete the empty temporary channel
-                temp_channel_name = before.channel.name
-                await before.channel.delete(reason="Temporary channel empty")
-
-                # Remove from tracking
-                bot.remove_temp_channel(before.channel.id)
-
-                print(f"Deleted empty temporary channel '{temp_channel_name}'")
-
-            except discord.errors.NotFound:
-                # Channel was already deleted
-                bot.remove_temp_channel(before.channel.id)
-            except Exception as e:
-                print(f"Error deleting temporary channel: {e}")
 
 # Slash Commands
 @bot.tree.command(name="add-vc-hub", description="Add a voice channel as a VC hub")
@@ -322,24 +302,6 @@ async def list_vc_hubs(interaction: discord.Interaction):
     except Exception as e:
         await interaction.response.send_message(f"❌ Error listing VC hubs: {e}", ephemeral=True)
 
-@bot.tree.command(name="purge", description="Delete a specified number of messages from this channel")
-@app_commands.describe(count="How many recent messages to delete (max 100)")
-async def purge(interaction: discord.Interaction, count: int):
-    # Only allow users with Manage Messages permission
-    if not interaction.user.guild_permissions.manage_messages:
-        await interaction.response.send_message("❌ You need 'Manage Messages' permission to use this command.", ephemeral=True)
-        return
-
-    # Discord only allows up to 100 messages at once
-    if count < 1 or count > 100:
-        await interaction.response.send_message("❌ Count must be between 1 and 100.", ephemeral=True)
-        return
-    # Acknowledge right away (so the UI doesn't timeout)
-    await interaction.response.defer(ephemeral=True)
-
-    deleted = await interaction.channel.purge(limit=count)
-    await interaction.followup.send(f"✅ Deleted {len(deleted)} message(s).", ephemeral=True)
-
 @bot.tree.command(name="help", description="Show a list of all available commands")
 async def help_command(interaction: discord.Interaction):
     embed = discord.Embed(
@@ -362,11 +324,6 @@ async def help_command(interaction: discord.Interaction):
     embed.add_field(
         name="/list-vc-hubs",
         value="List all configured VC hubs in this server.",
-        inline=False
-    )
-    embed.add_field(
-        name="/purge `count:`",
-        value="Delete the specified number of recent messages from this channel (max 100).",
         inline=False
     )
     embed.add_field(
